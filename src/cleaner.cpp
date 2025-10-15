@@ -29,13 +29,28 @@ class Cleaner {
         std::cerr << "Error scanning current directory: " << e.what() << '\n';
       }
 
-
       return files_found; // returns a list of files found with the given extension in the current folder
     }
 
     static std::vector<std::string> searchCurrentDirRecursively(std::string fileExtension) {
      std::vector<std::string> files_found;
 
+      if(fileExtension.empty()) return files_found; // No file Extension given
+      
+      // Add a '.' to the front incase the user passed in sth like 'exe' instead of '.exe'
+      if(fileExtension.front() != '.') fileExtension.insert(fileExtension.begin(), '.');
+
+      try {
+        for(const auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path())) {
+          if(!entry.is_regular_file()) continue;
+          if(entry.path().extension() == fileExtension) {
+            files_found.push_back(entry.path().string());
+          }
+        }
+      }
+      catch (const std::filesystem::filesystem_error &e) {
+        std::cerr << "Error scanning current directory recursively : " << e.what() << '\n';
+      }
 
 
      return files_found; // returns a list of files found with the given extension in the current folder
@@ -59,7 +74,8 @@ class Cleaner {
 
 // For testing
 int main() {
-  std::vector<std::string> list = Cleaner::searchCurrentDir(".exe");
+  // std::vector<std::string> list = Cleaner::searchCurrentDir(".cpp");
+  std::vector<std::string> list = Cleaner::searchCurrentDirRecursively("cpp");
 
   for(auto &i : list) std::cout << i << '\n';
 
