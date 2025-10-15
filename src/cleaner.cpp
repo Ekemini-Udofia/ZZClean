@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <filesystem>
-#include <fstream>
-
 
 class Cleaner {
   public:
@@ -52,19 +50,26 @@ class Cleaner {
         std::cerr << "Error scanning current directory recursively : " << e.what() << '\n';
       }
 
-
      return files_found; // returns a list of files found with the given extension in the current folder
     }
 
     // Deletes the files passed to it
     static bool deleteFiles(std::vector<std::string> files_to_delete) {
-      for(auto file : files_to_delete) {
-        // Remove the files one by one
-        if(true /*Change this to if file could not be deleted*/) {
-          return false;
+      bool all_ok = true;
+      for(const auto &file : files_to_delete) {
+        try {
+          std::error_code ec;
+          if(!std::filesystem::remove(std::filesystem::path(file), ec) || ec) {
+            std::cerr << "Failed to delete " << file << " (" << ec.message() << ")\n";
+            all_ok = false;
+          }
+        }
+        catch(const std::filesystem::filesystem_error &e) {
+          std::cerr << "Exception deleting file " << file << " : " << e.what() << '\n';
+          all_ok = false;
         }
       }
-      return true;
+      return all_ok;
     }
 
     // Make a confirmation function?
@@ -75,9 +80,17 @@ class Cleaner {
 // For testing
 int main() {
   // std::vector<std::string> list = Cleaner::searchCurrentDir(".cpp");
-  std::vector<std::string> list = Cleaner::searchCurrentDirRecursively("cpp");
+  std::string fileExtension;
+  std::cin >> fileExtension;
 
+  std::vector<std::string> list = Cleaner::searchCurrentDirRecursively(fileExtension);
   for(auto &i : list) std::cout << i << '\n';
 
+  bool delete_operation = Cleaner::deleteFiles(list);
+  if(!delete_operation) {
+    std::cout << "Operation Failed!\n";
+    return 1;
+  }
+  std::cout << "Delete operation successful!\n";
   return 0;
 }
