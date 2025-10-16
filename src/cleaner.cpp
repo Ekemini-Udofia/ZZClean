@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <filesystem>
+#include "include/cleaner.h"
 
 class Cleaner {
   public:
@@ -76,6 +77,7 @@ class Cleaner {
 
 };
 
+// Make an excpetion for __FILE__(the cleaner executable itself)
 
 // For testing
 int main() {
