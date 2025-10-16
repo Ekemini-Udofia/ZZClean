@@ -42,6 +42,28 @@ int main(int argc, char* argv[]) {
         break;
       }
 
+    } else {
+      for(const auto &file : Cleaner::searchCurrentDir(fileExtension)) {
+        std::cout << file << "\n";
+      }
+
+      std::cout << "Delete all [Y][N]: ";
+      char confirmation;
+      std::cin >> confirmation;
+
+      switch (confirmation) {
+      case 'y':case 'Y':
+        Cleaner::deleteFiles(Cleaner::searchCurrentDir(fileExtension));
+        std::cout << "Files Deleted!\n";
+        break;
+
+      case 'n':case 'N':
+        std::cout << "Operation Cancelled!\n";
+      
+      default:
+        break;
+      }
+
     }
 
   }
