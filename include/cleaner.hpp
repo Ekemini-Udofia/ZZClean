@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <filesystem>
+#include <string>
 
 class Cleaner {
   public:
