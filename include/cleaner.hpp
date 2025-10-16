@@ -1,7 +1,9 @@
+#ifndef INC_CLEANER_HPP_
+#define INC_CLEANER_HPP_
+
 #include <iostream>
 #include <vector>
 #include <filesystem>
-#include "include/cleaner.h"
 
 class Cleaner {
   public:
@@ -79,20 +81,5 @@ class Cleaner {
 
 // Make an excpetion for __FILE__(the cleaner executable itself)
 
-// For testing
-int main() {
-  // std::vector<std::string> list = Cleaner::searchCurrentDir(".cpp");
-  std::string fileExtension;
-  std::cin >> fileExtension;
 
-  std::vector<std::string> list = Cleaner::searchCurrentDirRecursively(fileExtension);
-  for(auto &i : list) std::cout << i << '\n';
-
-  bool delete_operation = Cleaner::deleteFiles(list);
-  if(!delete_operation) {
-    std::cout << "Operation Failed!\n";
-    return 1;
-  }
-  std::cout << "Delete operation successful!\n";
-  return 0;
-}
+#endif // INC_CLEANER_HPP_
