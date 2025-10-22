@@ -1,4 +1,4 @@
-#include "cleaner.hPP"
+#include "cleaner.hpp"
 #include "cxxopts.hpp"
 
 int main(int argc, char* argv[]) {
@@ -37,6 +37,7 @@ int main(int argc, char* argv[]) {
 
       case 'n':case 'N':
         std::cout << "Operation Cancelled!\n";
+        break;
       
       default:
         break;
@@ -59,6 +60,7 @@ int main(int argc, char* argv[]) {
 
       case 'n':case 'N':
         std::cout << "Operation Cancelled!\n";
+        break;
       
       default:
         break;
