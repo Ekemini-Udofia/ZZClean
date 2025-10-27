@@ -2,6 +2,9 @@
 #include "cxxopts.hpp"
 
 int main(int argc, char* argv[]) {
+
+  Cleaner::setExecutablePath(argv[0]);
+  
   std::string fileExtension = "";
 
   cxxopts::Options options("ZZClean",  "A Basic cli tool to rid build directories of certain files.");

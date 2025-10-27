@@ -7,8 +7,16 @@
 #include <string>
 
 class Cleaner {
+  private:
+    static std::filesystem::path executablePath;
+
   public:
     Cleaner() = delete;
+
+    // Set the zzclean executable file path so it can be skipped ove in case of ".exe"s
+    static void setExecutablePath(const std::filesystem::path& path) {
+      executablePath = path;
+    }
 
     // Searches only the current directory
     static std::vector<std::string> searchCurrentDir(std::string fileExtension) {
@@ -23,6 +31,7 @@ class Cleaner {
         for(const auto& entry : std::filesystem::directory_iterator(std::filesystem::current_path())) {
           if(!entry.is_regular_file()) continue;
           if(entry.path().extension() == fileExtension) {
+            if (std::filesystem::equivalent(entry.path(), executablePath)) continue;
             files_found.push_back(entry.path().string());
           }
         }
@@ -46,6 +55,7 @@ class Cleaner {
         for(const auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path())) {
           if(!entry.is_regular_file()) continue;
           if(entry.path().extension() == fileExtension) {
+            if (std::filesystem::equivalent(entry.path(), executablePath)) continue;
             files_found.push_back(entry.path().string());
           }
         }
