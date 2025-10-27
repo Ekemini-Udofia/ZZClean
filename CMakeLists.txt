@@ -8,7 +8,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 
-add_executable(ZZClean src/main.cpp)
+add_executable(ZZClean 
+  src/main.cpp
+  src/cleaner.cpp  
+)
 
 target_include_directories(
   ZZClean
